@@ -29,18 +29,15 @@ class MainPage(webapp2.RequestHandler):
 class Validate(webapp2.RequestHandler):
 
     def post(self):
-
-        message = self.request.get('message')
-        schema = self.request.get('schema')
+        message = self.request.get('messagetxt')
+        schema = self.request.get('schematxt')
         status = jadn_val(message, schema)
+        form_data = {'msg': message, 'schema': schema, 'status': status}
 
-        values = {'msg': message, 'schema': schema, 'status': status}
-
-#        query_params = {'message': message}
 #        self.redirect('/?' + urllib.urlencode(query_params))
 
         template = JINJA_ENVIRONMENT.get_template('validate.html')
-        self.response.write(template.render(values))
+        self.response.write(template.render(form_data))
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
