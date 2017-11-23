@@ -1,22 +1,44 @@
 <!DOCTYPE html>
-{% autoescape true %}
 <html lang="en">
   <head>
-    <title>OpenC2 Validator</title>
+    <title>JADN Lint</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <style>
+      .txtbox {
+        font-family: "Consolas", Monospace;
+        font-size: 0.7em;
+        line-height: 100%;
+      }
+    </style>
+    <script>
+      $(function() {
+          $(".hasclear").keyup(function () {
+              var t = $(this);
+              t.next('span').toggle(Boolean(t.val()));
+          });
+
+          $(".clearer").hide($(this).prev('input').val());
+
+          $(".clearer").click(function () {
+              $(this).prev('input').val('').focus();
+              $(this).hide();
+          });
+      })
+    </script>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
       <div class="navbar-brand">
-        <a href="#">OpenC2</a>
+        <a href="http://www.openc2.org">JADN</a>
         <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
-        Validator
+        Lint
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
               aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,14 +46,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link active" href="#">Home<span class="sr-only">(current)</span></a>
+          <div class="nav-item nav-link active" data-toggle="modal" data-target="#aboutModal">About<span class="sr-only">(current)</span></div>
           <a class="nav-item nav-link" href="#">Features</a>
-          <a class="nav-item nav-link disabled" href="#">Disabled</a>
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">
-          Dropdown
-            </a>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Examples</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>
@@ -42,39 +60,72 @@
       </div>
     </nav>
 
-    <div class="container">
-      <!-- [START greetings] -->
-      {% for greeting in greetings %}
-      <div class="row">
-        {% if greeting.author %}
-          <b>{{ greeting.author.email }}
-            {% if user and user.user_id() == greeting.author.identity %}
-              (You)
-            {% endif %}
-          </b> wrote:
-        {% else %}
-          An anonymous person wrote:
-        {% endif %}
-        <blockquote>{{ greeting.content }}</blockquote>
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">About</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>OpenC2 is defined using JSON Abstract Schema Notation (JADN).
+              The JADN validator can check messages against any schema.</p>
+            <p>Source is available from the OpenC2 <a href="https://github.com/OpenC2-org/jadn">JADN</a> Github repo.</p>
+          </div>
+        </div>
       </div>
-      {% endfor %}
-      <!-- [END greetings] -->
+    </div>
 
-      <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
-        <div><textarea name="content" class="input-block-level" rows="3"></textarea></div>
-        <div><input type="submit" class="btn btn-large btn-primary" value="Sign Guestbook"></div>
+    <div class="container-fluid">
+      <form action="/val" method="post">
+        <div class="form-group has-feedback">
+          <label for="schemabox" class="control-label">Schema</label>
+          <div>
+            <textarea id="schemabox" class="form-control hasclear txtbox" placeholder="Schema file" rows="6">{{ schema }}</textarea>
+            <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
+          </div>
+        </div>
+        <div class="form-group has-feedback">
+          <label for="msgbox" class="control-label">Message</label>
+          <div>
+            <textarea id="msgbox" class="form-control hasclear txtbox" placeholder="Message goes here" rows="6">{{ message }}</textarea>
+            <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="formFile">File input</label>
+          <input type="file" class="form-control-file form-control-sm" id="formFile">
+
+          <label class="custom-file form-control-sm">
+            <input type="file" class="custom-file-input" id="file2">
+            <span class="custom-file-control"></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary">Validate</button>
+          <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        </div>
       </form>
 
       <hr>
-
-      <form>Guestbook name:
-        <input value="{{ guestbook_name }}" name="guestbook_name">
-        <input type="submit" value="switch">
-      </form>
-
-      <a href="{{ url|safe }}">{{ url_linktext }}</a>
     </div>
 
+    <!--
+    <script>
+      $('.has-clear input[type="text"]').on('input propertychange', function() {
+        var $this = $(this);
+        var visible = Boolean($this.val());
+        $this.siblings('.form-control-clear').toggleClass('hidden', !visible);
+      }).trigger('propertychange');
+
+      $('.form-control-clear').click(function() {
+        $(this).siblings('input[type="text"]').val('')
+          .trigger('propertychange').focus();
+      });
+    </script>
+    -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -82,4 +133,4 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
   </body>
 </html>
-{% endautoescape %}
+
