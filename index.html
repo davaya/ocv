@@ -15,21 +15,22 @@
         font-size: 0.7em;
         line-height: 100%;
       }
+      .alert {
+        font-size: 0.9em;
+      }
     </style>
     <script>
-      $(function() {
-          $(".hasclear").keyup(function () {
-              var t = $(this);
-              t.next('span').toggle(Boolean(t.val()));
-          });
+      $(".hasclear").keyup(function () {
+          var t = $(this);
+          t.next('span').toggle(Boolean(t.val()));
+      });
 
-          $(".clearer").hide($(this).prev('input').val());
+      $(".clearer").hide($(this).prev('input').val());
 
-          $(".clearer").click(function () {
-              $(this).prev('input').val('').focus();
-              $(this).hide();
-          });
-      })
+      $(".clearer").click(function () {
+          $(this).prev('input').val('').focus();
+          $(this).hide();
+      });
     </script>
   </head>
 
@@ -37,7 +38,7 @@
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
       <div class="navbar-brand">
         <a href="http://www.openc2.org">JADN</a>
-        <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+        <img src="/img/jadn-logo.png" width="30" height="30" alt="">
         Lint
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -51,9 +52,9 @@
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">Examples</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" href="#">One thing</a>
+              <a class="dropdown-item" href="#">Or another</a>
+              <a class="dropdown-item" href="#">Something else</a>
             </div>
           </div>
         </div>
@@ -81,16 +82,30 @@
     <div class="container-fluid">
       <form action="/val" method="post">
         <div class="form-group has-feedback">
-          <label for="schemabox" class="control-label">Schema</label>
+            <label for="schemabox" class="control-label dropdown-toggle" data-toggle="dropdown">Schema</label>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Clear</a>
+                <a class="dropdown-item" href="#">Protobuf.1</a>
+                <a class="dropdown-item" href="#">Protobuf.2</a>
+                <a class="dropdown-item" href="#">OpenC2</a>
+                <div class="dropdown-divider"></div>
+                <form class="px-1 py-1">
+                    <input type="file" class="form-control-file form-control-sm" id="formFile">
+                </form>
+                <a class="dropdown-item" href="#">File ...</a>
+                <a class="dropdown-item" href="#">URL ...</a>
+            </div>
+            <div id="schemastat" class="alert alert-success mb-0 py-0" role="alert"><b>OK</b> Skippy - this looks about right.</div>
           <div>
-            <textarea id="schemabox" name="schematxt" class="form-control hasclear txtbox" placeholder="Schema file" rows="6">{{ schema }}</textarea>
+            <textarea id="schemabox" name="schematxt" class="form-control hasclear txtbox" placeholder="Schema file" rows="10">{{ schema }}</textarea>
             <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
           </div>
         </div>
         <div class="form-group has-feedback">
-          <label for="msgbox" class="control-label">Message</label>
+          <label for="msgbox" class="control-label dropdown-toggle" data-toggle="dropdown">Message</label>
+            <div id="msgstat" class="alert alert-warning mb-0 py-0" role="alert"><b>Ruh Roh</b> Something smells fishy</div>
           <div>
-            <textarea id="msgbox" name="messagetxt" class="form-control hasclear txtbox" placeholder="Message goes here" rows="6">{{ message }}</textarea>
+            <textarea id="msgbox" name="messagetxt" class="form-control hasclear txtbox" placeholder="Message goes here" rows="10">{{ message }}</textarea>
             <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
           </div>
         </div>
@@ -108,7 +123,6 @@
           <button type="reset" class="btn btn-outline-secondary">Reset</button>
         </div>
       </form>
-
       <hr>
     </div>
 
