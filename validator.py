@@ -20,6 +20,10 @@ class MainPage(webapp2.RequestHandler):
         template_values = {
             'message': '{"action":"deny"}',
             'schema': '{ "meta": {},\n  "types": []\n}',
+            'schemacode': 'alert-success',
+            'msgcode': 'alert-warning',
+            'schemastatus': '<b>OK</b> - looks about right Skippy.',
+            'msgstatus': '<b>Ruh Roh</b> Something smells fishy'
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
