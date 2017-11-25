@@ -10,6 +10,9 @@
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
     <style>
+      .hide {
+          display: none;
+      }
       .txtbox {
         font-family: "Consolas", Monospace;
         font-size: 0.7em;
@@ -19,18 +22,30 @@
         font-size: 0.9em;
       }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
-      $(".hasclear").keyup(function () {
-          var t = $(this);
-          t.next('span').toggle(Boolean(t.val()));
-      });
+        $(document).ready(function() {
+            $("li").click(function(){
+                boxid = this.parentNode.getAttribute("refid");
+                if (boxid) {
+                    box = document.getElementById(boxid);
+                    box.value = this.firstElementChild.innerText.trim();
+                }
+            });
 
-      $(".clearer").hide($(this).prev('input').val());
+            $(".hasclear").keyup(function() {
+                var t = $(this);
+                t.next('span').toggle(Boolean(t.val()));
+            });
 
-      $(".clearer").click(function () {
-          $(this).prev('input').val('').focus();
-          $(this).hide();
-      });
+            $(".clearer").hide($(this).prev('input').val());
+
+            $(".clearer").click(function () {
+                $(this).prev('input').val('').focus();
+                $(this).hide();
+            });
+        });
     </script>
   </head>
 
@@ -83,14 +98,27 @@
       <form action="/val" method="post">
         <div class="form-group has-feedback">
             <label for="schemabox" class="control-label dropdown-toggle" data-toggle="dropdown">Schema</label>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Clear</a>
-                <a class="dropdown-item" href="#">Protobuf.1</a>
-                <a class="dropdown-item" href="#">Protobuf.2</a>
-                <a class="dropdown-item" href="#">OpenC2</a>
+            <div class="dropdown-menu" refid="schemabox">
+                <li class="dropdown-item">Clear
+                    <pre class="hide"></pre>
+                </li>
+                <li class="dropdown-item">Protobuf.1
+                    <pre class="hide">
+{ "meta":{}
+  "types":[]}
+                    </pre>
+                </li>
+                <li class="dropdown-item">Protobuf.2
+                    <pre class="hide">
+{ "meta":{fooasldkfj}
+  "types":[svmewjr]}
+                    </pre>
+                </li>
+                <li class="dropdown-item">OpenC2
+                    <a href="openc2.jadn" class="hide"></a></li>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">File ...</a>
-                <a class="dropdown-item" href="#">URL ...</a>
+                <li class="dropdown-item">File ...</li>
+                <li class="dropdown-item">URL ...</li>
             </div>
             <div id="schemastat" class="alert {{ schemacode }} mb-0 py-0" role="alert">
               {% autoescape false %}{{ schemastatus }}{% endautoescape %}
@@ -143,7 +171,6 @@
     -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
   </body>
