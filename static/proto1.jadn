@@ -1,7 +1,7 @@
 {
  "meta": {
   "module": "proto_1",
-  "description": "Example message from https://developers.google.com/protocol-buffers/"
+  "description": "JADN specification of message type from https://developers.google.com/protocol-buffers/"
  },
 
  "types": [
