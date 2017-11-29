@@ -17,13 +17,14 @@ def jadn_val(a, b):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
+        print("val: GET")
         template_values = {
-            'message': '{"action":"deny"}',
-            'schema': '{ "meta": {},\n  "types": []\n}',
-            'schemacode': 'alert-success',
-            'msgcode': 'alert-warning',
-            'schemastatus': '<b>OK</b> - looks about right Skipper.',
-            'msgstatus': '<b>Ruh Roh</b> - something smells fishy!'
+#            'message': '',
+#            'schema': '',
+#            'schemacode': 'alert-success',
+#            'msgcode': 'alert-warning',
+#            'schemastatus': '<b>OK</b> - looks about right Skipper.',
+#            'msgstatus': '<b>Ruh Roh</b> - something smells fishy!'
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -33,6 +34,7 @@ class MainPage(webapp2.RequestHandler):
 class Validate(webapp2.RequestHandler):
 
     def post(self):
+        print("val: POST")
         message = self.request.get('messagetxt')
         schema = self.request.get('schematxt')
         status = jadn_val(message, schema)
@@ -43,8 +45,9 @@ class Validate(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('validate.html')
         self.response.write(template.render(form_data))
 
+
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
     ('/val', Validate),
+    ('/.*', MainPage),
 ], debug=True)
 

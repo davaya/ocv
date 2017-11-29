@@ -8,52 +8,17 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-
-    <style>
-      .hide {
-          display: none;
-      }
-      .txtbox {
-        font-family: "Consolas", Monospace;
-        font-size: 0.7em;
-        line-height: 100%;
-      }
-      .alert {
-        font-size: 0.9em;
-      }
-    </style>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            $("li").click(function(){
-                boxid = this.parentNode.getAttribute("refid");
-                if (boxid) {
-                    box = document.getElementById(boxid);
-                    box.value = this.firstElementChild.innerText.trim();
-                }
-            });
 
-            $(".hasclear").keyup(function() {
-                var t = $(this);
-                t.next('span').toggle(Boolean(t.val()));
-            });
-
-            $(".clearer").hide($(this).prev('input').val());
-
-            $(".clearer").click(function () {
-                $(this).prev('input').val('').focus();
-                $(this).hide();
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="/static/base.css">
+    <script src="/static/lint.js"></script>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
       <div class="navbar-brand">
+        <img src="/static/jadn-logo.png" width="30" height="30" alt="">
         <a href="http://www.openc2.org">JADN</a>
-        <img src="/img/jadn-logo.png" width="30" height="30" alt="">
         Lint
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -97,55 +62,50 @@
     <div class="container-fluid">
       <form action="/val" method="post">
         <div class="form-group has-feedback">
-            <label for="schemabox" class="control-label dropdown-toggle" data-toggle="dropdown">Schema</label>
-            <div class="dropdown-menu" refid="schemabox">
-                <li class="dropdown-item">Clear
-                    <pre class="hide"></pre>
-                </li>
-                <li class="dropdown-item">Protobuf.1
-                    <pre class="hide">
-{ "meta":{}
-  "types":[]}
-                    </pre>
-                </li>
-                <li class="dropdown-item">Protobuf.2
-                    <pre class="hide">
-{ "meta":{fooasldkfj}
-  "types":[svmewjr]}
-                    </pre>
-                </li>
-                <li class="dropdown-item">OpenC2
-                    <a href="openc2.jadn" class="hide"></a></li>
-                <div class="dropdown-divider"></div>
-                <li class="dropdown-item">File ...</li>
-                <li class="dropdown-item">URL ...</li>
-            </div>
-            <div id="schemastat" class="alert {{ schemacode }} mb-0 py-0" role="alert">
-              {% autoescape false %}{{ schemastatus }}{% endautoescape %}
+            <div refid="schemabox" class="{{schemacode}} mb-0 py-0 border">
+                <select class="{{ schemacode }} mb-0 py-0">
+                    <option value="" selected>Schema</option>
+                    <option value="proto1.jadn">Proto-1</option>
+                    <option value="proto2.jadn">Proto-2</option>
+                    <option value="openc2.jadn">OpenC2</option>
+                    <option disabled>──────────</option>
+                    <option value="">File...</option>
+                    <option value="">URL...</option>
+                </select>
+                <span id="schemastat" class="alert {{ schemacode }} mb-0 py-0" role="alert">
+                    {% autoescape false %}{{ schemastatus }}{% endautoescape %}
+                </span>
             </div>
           <div>
-            <textarea id="schemabox" name="schematxt" class="form-control hasclear txtbox" placeholder="Schema file" rows="10">{{ schema }}</textarea>
+            <textarea id="schemabox" name="schematxt" class="form-control hasclear txtbox" placeholder="Schema file" rows="20">{{ schema }}</textarea>
             <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
           </div>
         </div>
         <div class="form-group has-feedback">
-          <label for="msgbox" class="control-label dropdown-toggle" data-toggle="dropdown">Message</label>
-          <div id="msgstat" class="alert {{ msgcode }} mb-0 py-0" role="alert">
-            {% autoescape false %}{{ msgstatus }}{% endautoescape %}
-          </div>
-          <div>
-            <textarea id="msgbox" name="messagetxt" class="form-control hasclear txtbox" placeholder="Message goes here" rows="10">{{ message }}</textarea>
-            <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
-          </div>
+            <div refid="msgbox" class="{{msgcode}} mb-0 py-0 border">
+                <select class="{{ msgcode }} mb-0 py-0">
+                    <option value="" selected>Message</option>
+                    <option value="proto1.json">Proto-1</option>
+                    <option value="proto2.json">Proto-2</option>
+                    <option value="query_actions.json">Query actions</option>
+                    <option value="query_actions_response.json">Query response</option>
+                    <option value="deny_ip.json">Deny ip</option>
+                    <option disabled>──────────</option>    <!-- Box drawing character U+2500-->
+                    <option value="">File...</option>
+                    <option value="">URL...</option>
+                </select>
+                <span id="msgstat" class="alert {{ msgcode }} mb-0 py-0" role="alert">
+                    {% autoescape false %}{{ msgstatus }}{% endautoescape %}
+                </span>
+            </div>
+            <div>
+                <textarea id="msgbox" name="messagetxt" class="form-control hasclear txtbox" placeholder="Message goes here" rows="10">{{ message }}</textarea>
+                <span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
+            </div>
         </div>
         <div class="form-group">
           <label for="formFile">File input</label>
           <input type="file" class="form-control-file form-control-sm" id="formFile">
-
-          <label class="custom-file form-control-sm">
-            <input type="file" class="custom-file-input" id="file2">
-            <span class="custom-file-control"></span>
-          </label>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-outline-primary">Validate</button>

@@ -1,0 +1,20 @@
+/* JADN Lint Server styles */
+
+.hide {
+    display: none;
+}
+
+/* Schema and Message text areas - use small monospaced font */
+.txtbox {
+    font-family: "Consolas", Monospace;
+    font-size: 0.7em;
+    line-height: 100%;
+}
+
+.alert {
+    font-size: 0.9em;
+}
+
+select {
+    font-size: 0.9em;
+}

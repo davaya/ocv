@@ -1,0 +1,13 @@
+{
+ "meta": {
+  "module": "proto_1",
+  "description": "Example message from https://developers.google.com/protocol-buffers/"
+ },
+
+ "types": [
+  ["Person", "Record", [], "", [
+    [1, "name", "String", [], ""],
+    [2, "id", "Integer", [], ""],
+    [3, "email", "String", ["?"], ""]
+  ]
+}
