@@ -10,15 +10,16 @@
     [2, "id", "Integer", [], ""],
     [3, "email", "String", ["?"], ""],
     [4, "phone", "ArrayOf", ["#PhoneNumber"], ""]
-  ],
+  ]],
 
   ["PhoneNumber", "Record", [], "", [
-    [1, "number", String", [], ""],
+    [1, "number", "String", [], ""],
     [2, "type", "PhoneType", ["?", "!HOME"], ""]
-  ],
+  ]],
 
   ["PhoneType", "Enumerated", [], "", [
     [0, "MOBILE", ""],
     [1, "HOME", ""],
     [2, "WORK", ""]
-}
+  ]]
+]}

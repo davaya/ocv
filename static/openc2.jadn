@@ -10,7 +10,7 @@
  "types": [
   ["OpenC2Message", "Choice", [], "", [
     [1, "command", "OpenC2Command", [], ""],
-    [2, "response", "OpenC2Response", [], ""]
+    [2, "response", "OpenC2Response", [], ""]]
   ],
 
   ["OpenC2Command", "Record", [], "", [
@@ -89,4 +89,4 @@
     [22, "windows_registry_key", "windows-registry-key", [], "SCO v2"],
     [23, "x509_certificate", "x509-certificate", [], "SCO v2"]]
   ]
-}
+]}

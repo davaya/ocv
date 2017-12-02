@@ -1,7 +1,40 @@
 
 $(document).ready(function() {
 
+    $("textarea").click(function() {
+        console.log("textarea clicked");
+    });
+
+    $(".txtbox").change(function() {
+        check_json(this);
+        console.log("txtbox value changed");
+    });
+
+    $("form").bind("reset", function(e) {
+       $(".tstat").removeClass("alert-warning alert-success").html("");
+       console.log("form reset");
+    });
+
+
+    function check_json(t) {
+        emsg = "<b>OK</b>"; estat = "alert-success";
+        if (t.value.length > 0) {
+            try {
+                JSON.parse(t.value);
+            } catch(e) {
+                emsg = "<b>Err</b>: " + e.message;
+                estat = "alert-warning";
+            }
+        }
+        ss = t.getAttribute("stat");
+        console.log(ss + ": " + estat + " n=" + t.value.length);
+        $("#" + ss).html(emsg);
+        $("#" + ss).removeClass("alert-warning alert-success").addClass(estat);
+//        $("[refid=" + t.id + "]").removeClass("alert-warning alert-success").addClass(estat);
+    }
+
     $("select").click(function() {
+        console.log("select")
         file = this.selectedOptions[0].value;
         boxid = this.parentNode.attributes.refid.value;
         box = document.getElementById(boxid);
@@ -14,18 +47,11 @@ $(document).ready(function() {
             xhr.onload = function (e) {
                 if (this.status == 200) {
                     box.value = this.responseText;
+                    check_json(box);
                     // var blob = new Blob([this.response], {type: 'image/png'});
                 }
             };
             xhr.send();
-        }
-    });
-
-    $("li").click(function(){
-        boxid = this.parentNode.getAttribute("refid");
-        if (boxid) {
-            box = document.getElementById(boxid);
-            box.value = this.firstElementChild.innerText.trim();
         }
     });
 

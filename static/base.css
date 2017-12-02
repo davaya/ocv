@@ -18,3 +18,27 @@
 select {
     font-size: 0.9em;
 }
+
+.ttop {
+    display: table;
+    width: 100%;
+}
+
+.trow {
+    display: table-cell;
+}
+
+.tstat {
+    width: 100%
+}
+/*
+.inline-p {
+    whitespace: nowrap;
+}
+*/
+
+/*
+.inline-c {
+    float: right;
+}
+*/
