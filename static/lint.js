@@ -1,11 +1,7 @@
 
 $(document).ready(function() {
 
-    $("textarea").click(function() {
-        console.log("textarea clicked");
-    });
-
-    $(".txtbox").change(function() {
+    $(".txtbox").on('input', function() {
         check_json(this);
         console.log("txtbox value changed");
     });
