@@ -3,12 +3,10 @@ $(document).ready(function() {
 
     $(".txtbox").on('input', function() {
         check_json(this);
-        console.log("txtbox value changed");
     });
 
     $("form").bind("reset", function(e) {
        $(".tstat").removeClass("alert-warning alert-success").html("");
-       console.log("form reset");
     });
 
 
@@ -23,14 +21,13 @@ $(document).ready(function() {
             }
         }
         ss = t.getAttribute("stat");
-        console.log(ss + ": " + estat + " n=" + t.value.length);
+//        console.log(ss + ": " + estat + " n=" + t.value.length);
         $("#" + ss).html(emsg);
         $("#" + ss).removeClass("alert-warning alert-success").addClass(estat);
 //        $("[refid=" + t.id + "]").removeClass("alert-warning alert-success").addClass(estat);
     }
 
     $("select").click(function() {
-        console.log("select")
         file = this.selectedOptions[0].value;
         boxid = this.parentNode.attributes.refid.value;
         box = document.getElementById(boxid);
